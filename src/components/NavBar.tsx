@@ -23,7 +23,7 @@ export default function NavBar() {
       <div className="flex items-center gap-2">
         <MobileMenuBar />
         <Link href="/" className="font-bold tracking-tight text-xl md:text-2xl">
-          Lama
+          Agency
         </Link>
       </div>
       <nav className="flex gap-4 items-center">

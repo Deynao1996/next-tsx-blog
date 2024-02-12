@@ -23,11 +23,15 @@ export default function NotFoundPage() {
         </p>
 
         <div className="flex items-center w-auto mt-6 gap-x-3 shrink-0">
-          <Button variant={'outline'} onClick={() => router.back()}>
+          <Button
+            variant={'outline'}
+            onClick={() => router.back()}
+            aria-label="Navigate back to previous page"
+          >
             <MoveLeft className="mr-2" />
             <span>Go back</span>
           </Button>
-          <Button variant={'default'}>
+          <Button variant={'default'} asChild>
             <Link href={'/'}>Take me home</Link>
           </Button>
         </div>

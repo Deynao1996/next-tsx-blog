@@ -43,10 +43,10 @@ export default function LoginPage() {
           <CardTitle className="text-center text-3xl mb-5">Login</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
-          <Button>
+          <Button aria-label="Login with Github">
             <Github className="mr-2 h-4 w-4" /> Login with Github
           </Button>
-          <Button variant={'secondary'}>
+          <Button variant={'secondary'} aria-label="Login with Google">
             <Facebook className="mr-2 h-4 w-4" /> Login with Facebook
           </Button>
           <p className="text-center font-medium">OR</p>

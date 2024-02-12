@@ -24,10 +24,27 @@ export type FieldNameType =
   | NewPostFieldNameType
   | NewUserFieldNameType
 
-export interface FormComponentProps {
+export interface IFormComponentProps {
   onSubmit: SubmitHandler<FieldValues>
   form: UseFormReturn<FieldValues, FieldNameType>
   fieldsData: IInputField<FieldNameType>[]
   isSpacing?: boolean
   btnContent?: string
+}
+
+export type BlogPostType = {
+  title: string
+  descr: string
+  img?: string
+  userId: string
+  slug: string
+}
+
+export type UserPostType = {
+  username: string
+  email: string
+  img?: string
+  password: string
+  slug: string
+  isAdmin: boolean
 }

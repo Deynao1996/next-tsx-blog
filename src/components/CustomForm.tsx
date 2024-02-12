@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from './ui/textarea'
-import { FieldNameType, FormComponentProps, IInputField } from '@/types'
+import { FieldNameType, IFormComponentProps } from '@/types'
 import {
   Select,
   SelectContent,
@@ -30,7 +30,7 @@ export default function CustomForm({
   fieldsData,
   isSpacing,
   btnContent
-}: FormComponentProps) {
+}: IFormComponentProps) {
   function renderInput(
     { type, label, variants }: RenderInputType,
     field: ControllerRenderProps<FieldValues, FieldNameType>
