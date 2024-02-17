@@ -1,12 +1,6 @@
-import {
-  ContactFieldNameType,
-  IInputField,
-  LoginFieldNameType,
-  NewPostFieldNameType,
-  NewUserFieldNameType
-} from './types'
+import { FieldData } from './lib/types'
 
-export const loginFieldsData: IInputField<LoginFieldNameType>[] = [
+export const loginFieldsData: FieldData[] = [
   {
     fieldName: 'username',
     defaultValue: '',
@@ -21,7 +15,7 @@ export const loginFieldsData: IInputField<LoginFieldNameType>[] = [
   }
 ]
 
-export const contactFieldsData: IInputField<ContactFieldNameType>[] = [
+export const contactFieldsData: FieldData[] = [
   { fieldName: 'username', defaultValue: '', label: 'Username', type: 'text' },
   {
     fieldName: 'email',
@@ -43,7 +37,7 @@ export const contactFieldsData: IInputField<ContactFieldNameType>[] = [
   }
 ]
 
-export const newPostFieldData: IInputField<NewPostFieldNameType>[] = [
+export const newPostFieldData: FieldData[] = [
   { fieldName: 'title', defaultValue: '', label: 'Title', type: 'text' },
   {
     fieldName: 'slug',
@@ -52,7 +46,13 @@ export const newPostFieldData: IInputField<NewPostFieldNameType>[] = [
     type: 'text'
   },
   {
-    fieldName: 'image',
+    fieldName: 'userId',
+    defaultValue: '',
+    label: 'UserID',
+    type: 'text'
+  },
+  {
+    fieldName: 'img',
     defaultValue: '',
     label: 'Image',
     type: 'text'
@@ -65,7 +65,7 @@ export const newPostFieldData: IInputField<NewPostFieldNameType>[] = [
   }
 ]
 
-export const newUserFieldData: IInputField<NewUserFieldNameType>[] = [
+export const newUserFieldData: FieldData[] = [
   { fieldName: 'username', defaultValue: '', label: 'Username', type: 'text' },
   {
     fieldName: 'email',
@@ -80,7 +80,7 @@ export const newUserFieldData: IInputField<NewUserFieldNameType>[] = [
     type: 'text'
   },
   {
-    fieldName: 'image',
+    fieldName: 'img',
     defaultValue: '',
     label: 'Image',
     type: 'text'
@@ -90,6 +90,6 @@ export const newUserFieldData: IInputField<NewUserFieldNameType>[] = [
     defaultValue: '',
     label: 'isAdmin',
     type: 'select',
-    variants: ['no', 'yes']
+    selectVariants: ['no', 'yes']
   }
 ]

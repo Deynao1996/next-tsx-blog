@@ -1,5 +1,11 @@
-import { ControllerRenderProps, FieldValues } from 'react-hook-form'
-import { Button } from '@/components/ui/button'
+'use client'
+
+import {
+  ControllerRenderProps,
+  Path,
+  SubmitHandler,
+  useForm
+} from 'react-hook-form'
 import {
   Form,
   FormControl,
@@ -9,7 +15,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from './ui/textarea'
-import { FieldNameType, IFormComponentProps } from '@/types'
 import {
   Select,
   SelectContent,
@@ -17,29 +22,39 @@ import {
   SelectTrigger,
   SelectValue
 } from './ui/select'
-
-type RenderInputType = {
-  type: string
-  label: string
-  variants?: string[]
-}
+import { SubmitBtn } from './ui/submitBtn'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { getDefaultValueFromFields } from '@/lib/utils'
+import { type CustomFormProps, type FieldData } from '@/lib/types'
+import { z } from 'zod'
 
 export default function CustomForm({
-  onSubmit,
-  form,
   fieldsData,
-  isSpacing,
-  btnContent
-}: IFormComponentProps) {
+  btnContent,
+  formSchema
+}: CustomFormProps) {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: getDefaultValueFromFields(fieldsData)
+  })
+
+  const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = async (data) => {
+    console.log('User form data:', data)
+    // Handle form submission for user form
+  }
+
   function renderInput(
-    { type, label, variants }: RenderInputType,
-    field: ControllerRenderProps<FieldValues, FieldNameType>
+    input: FieldData,
+    field: ControllerRenderProps<
+      z.infer<typeof formSchema>,
+      Path<z.infer<typeof formSchema>>
+    >
   ) {
-    switch (type) {
+    switch (input.type) {
       case 'textarea':
         return (
           <Textarea
-            placeholder={label}
+            placeholder={input.label}
             className="h-24 resize-none"
             {...field}
           />
@@ -49,11 +64,11 @@ export default function CustomForm({
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger className="h-12">
-                <SelectValue placeholder={label} />
+                <SelectValue placeholder={input.label} />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {variants?.map((variant) => (
+              {input.selectVariants.map((variant) => (
                 <SelectItem
                   key={variant}
                   value={variant}
@@ -67,31 +82,34 @@ export default function CustomForm({
         )
 
       default:
-        return <Input placeholder={label} className="h-12" {...field} />
+        return (
+          <Input
+            placeholder={input.label}
+            className="h-12"
+            type={input.type}
+            {...field}
+          />
+        )
     }
   }
+
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className={`space-y-${isSpacing ? 1 : 4}`}
-      >
-        {fieldsData.map(({ fieldName, defaultValue, ...item }) => (
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
+        {fieldsData.map((item) => (
           <FormField
-            key={fieldName}
+            key={item.fieldName}
             control={form.control}
-            name={fieldName}
+            name={item.fieldName}
             render={({ field }) => (
               <FormItem>
                 <FormControl>{renderInput(item, field)}</FormControl>
-                <FormMessage>{isSpacing ? '\u00A0' : ''}</FormMessage>
+                <FormMessage className="h-4"> </FormMessage>
               </FormItem>
             )}
           />
         ))}
-        <Button type="submit" className="w-full" aria-label="Send form info">
-          {btnContent ? btnContent : 'Submit'}
-        </Button>
+        <SubmitBtn>{btnContent ? btnContent : 'Submit'}</SubmitBtn>
       </form>
     </Form>
   )

@@ -1,4 +1,4 @@
-import { FieldNameType, IInputField } from '@/types'
+import { FieldNameType, IInputField } from '@/lib/types'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import mongoose from 'mongoose'

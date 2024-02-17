@@ -1,13 +1,14 @@
-import { BlogPostType, UserPostType } from '@/types'
+import { type TBlogPost, type TUserPost } from '@/lib/types'
 import { Post, User } from './models'
 import { connectToDb } from './utils'
+import { unstable_noStore as noStore } from 'next/cache'
 
 //!TODO CHECK SECURE
 
 export const getPosts = async () => {
   try {
     await connectToDb()
-    const posts: BlogPostType[] = await Post.find()
+    const posts: TBlogPost[] = await Post.find()
     return posts
   } catch (error: any) {
     console.log(error.message)
@@ -18,7 +19,7 @@ export const getPosts = async () => {
 export const getUsers = async () => {
   try {
     await connectToDb()
-    const users: UserPostType[] = await User.find()
+    const users: TUserPost[] = await User.find()
     return users
   } catch (error: any) {
     console.log(error.message)
@@ -29,7 +30,7 @@ export const getUsers = async () => {
 export const getSinglePost = async (slug: string) => {
   try {
     await connectToDb()
-    const post: BlogPostType | null = await Post.findOne({ slug })
+    const post: TBlogPost | null = await Post.findOne({ slug })
     if (!post) throw new Error('Failed to find post!')
     return post
   } catch (error: any) {
@@ -39,9 +40,10 @@ export const getSinglePost = async (slug: string) => {
 }
 
 export const getSingleUser = async (id: string) => {
+  noStore()
   try {
     await connectToDb()
-    const post: UserPostType | null = await User.findById(id)
+    const post: TUserPost | null = await User.findById(id)
     if (!post) throw new Error('Failed to find user!')
     return post
   } catch (error: any) {
