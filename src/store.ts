@@ -1,4 +1,11 @@
-import { FieldData } from './lib/types'
+import { addPost, addUser, contactUs, login } from './lib/actions'
+import {
+  addPostFormSchema,
+  addUserFormSchema,
+  contactFormSchema,
+  loginFormSchema
+} from './lib/formSchema'
+import { FieldData, FormInfo } from './lib/types'
 
 export const loginFieldsData: FieldData[] = [
   {
@@ -13,7 +20,7 @@ export const loginFieldsData: FieldData[] = [
     label: 'Password',
     type: 'password'
   }
-]
+] as const
 
 export const contactFieldsData: FieldData[] = [
   { fieldName: 'username', defaultValue: '', label: 'Username', type: 'text' },
@@ -35,7 +42,7 @@ export const contactFieldsData: FieldData[] = [
     label: 'Message',
     type: 'textarea'
   }
-]
+] as const
 
 export const newPostFieldData: FieldData[] = [
   { fieldName: 'title', defaultValue: '', label: 'Title', type: 'text' },
@@ -63,7 +70,7 @@ export const newPostFieldData: FieldData[] = [
     label: 'Description',
     type: 'textarea'
   }
-]
+] as const
 
 export const newUserFieldData: FieldData[] = [
   { fieldName: 'username', defaultValue: '', label: 'Username', type: 'text' },
@@ -92,4 +99,27 @@ export const newUserFieldData: FieldData[] = [
     type: 'select',
     selectVariants: ['no', 'yes']
   }
-]
+] as const
+
+export const formInfo: FormInfo = {
+  post: {
+    fieldsData: newPostFieldData,
+    formSchema: addPostFormSchema,
+    action: addPost
+  },
+  user: {
+    fieldsData: newUserFieldData,
+    formSchema: addUserFormSchema,
+    action: addUser
+  },
+  login: {
+    fieldsData: loginFieldsData,
+    formSchema: loginFormSchema,
+    action: login
+  },
+  contact: {
+    fieldsData: contactFieldsData,
+    formSchema: contactFormSchema,
+    action: contactUs
+  }
+} as const

@@ -1,7 +1,5 @@
 import mongoose from 'mongoose'
 
-//!TODO CHECK VALIDATION
-
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -23,7 +21,7 @@ const userSchema = new mongoose.Schema(
       min: 6
     },
     img: { type: String },
-    isAdmin: { type: Boolean, default: false }
+    isAdmin: { type: String, default: '', enum: ['no', 'yes'] }
   },
   { timestamps: true }
 )
@@ -45,5 +43,5 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-export const User = mongoose.models.User || mongoose.model('User', userSchema)
-export const Post = mongoose.models.Post || mongoose.model('Post', postSchema)
+export const User = mongoose.models?.User || mongoose.model('User', userSchema)
+export const Post = mongoose.models?.Post || mongoose.model('Post', postSchema)

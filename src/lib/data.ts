@@ -4,8 +4,10 @@ import { connectToDb } from './utils'
 import { unstable_noStore as noStore } from 'next/cache'
 
 //!TODO CHECK SECURE
+//!NOT SEND PASSWORDS
 
 export const getPosts = async () => {
+  noStore()
   try {
     await connectToDb()
     const posts: TBlogPost[] = await Post.find()
@@ -17,6 +19,7 @@ export const getPosts = async () => {
 }
 
 export const getUsers = async () => {
+  noStore()
   try {
     await connectToDb()
     const users: TUserPost[] = await User.find()

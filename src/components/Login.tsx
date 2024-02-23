@@ -1,6 +1,5 @@
 'use client'
 
-import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -11,8 +10,6 @@ import {
 } from '@/components/ui/card'
 import { Facebook, Github } from 'lucide-react'
 import CustomForm from './CustomForm'
-import { loginFieldsData } from '@/store'
-import { loginFormSchema } from '@/lib/formSchema'
 
 export default function Login() {
   return (
@@ -28,11 +25,7 @@ export default function Login() {
           <Facebook className="mr-2 h-4 w-4" /> Login with Facebook
         </Button>
         <p className="text-center font-medium">OR</p>
-        <CustomForm
-          fieldsData={loginFieldsData}
-          formSchema={loginFormSchema}
-          btnContent="Login"
-        />
+        <CustomForm btnContent="Login" label="login" />
       </CardContent>
       <CardFooter className="justify-center">
         <Button variant={'link'} className="tracking-tight p-0" size={'sm'}>

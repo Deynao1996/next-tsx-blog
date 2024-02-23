@@ -7,22 +7,21 @@ import React from 'react'
 import { ReloadIcon } from '@radix-ui/react-icons'
 
 export interface SubmitButtonProps
-  extends React.HTMLAttributes<HTMLButtonElement> {}
+  extends React.HTMLAttributes<HTMLButtonElement> {
+  disabled?: boolean
+}
 
 const SubmitBtn = React.forwardRef<HTMLButtonElement, SubmitButtonProps>(
-  ({ children, className, ...props }, ref) => {
-    const { pending } = useFormStatus()
-
+  ({ children, className, disabled, ...props }, ref) => {
     return (
       <Button
         type="submit"
-        aria-disabled={pending}
-        disabled={pending}
         className={cn('w-full', className)}
         ref={ref}
+        disabled={disabled}
         {...props}
       >
-        {pending ? (
+        {disabled ? (
           <>
             <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
             Please wait

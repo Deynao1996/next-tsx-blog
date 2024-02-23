@@ -1,4 +1,4 @@
-import { FieldNameType, IInputField } from '@/lib/types'
+import { FieldData } from '@/lib/types'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import mongoose from 'mongoose'
@@ -7,13 +7,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function getDefaultValueFromFields(
-  fields: IInputField<FieldNameType>[]
-) {
+export function getDefaultValueFromFields(fields: FieldData[]) {
   return fields.reduce((acc, field) => {
     acc[field.fieldName] = field.defaultValue
     return acc
-  }, {} as Record<FieldNameType, string>)
+  }, {} as { [key: string]: string })
 }
 
 let isConnected = false

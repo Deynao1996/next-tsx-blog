@@ -1,5 +1,5 @@
 import UserPost from '@/components/UserPost'
-import { getPosts, getSinglePost } from '@/lib/data'
+import { getSinglePost } from '@/lib/data'
 import { type TBlogPost } from '@/lib/types'
 import Image from 'next/image'
 import React from 'react'

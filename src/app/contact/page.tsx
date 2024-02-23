@@ -1,8 +1,8 @@
-import { ContactUs } from '@/components/ContactUs'
 import React from 'react'
 import contact from '../../../public/contact.png'
 import Image from 'next/image'
 import { Metadata } from 'next'
+import CustomForm from '@/components/CustomForm'
 
 export const metadata: Metadata = {
   title: 'Contact Page',
@@ -22,7 +22,7 @@ export default function ContactPage() {
         />
       </div>
       <div className="flex-1">
-        <ContactUs />
+        <CustomForm label="contact" />
       </div>
     </main>
   )

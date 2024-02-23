@@ -1,5 +1,11 @@
-import { FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form'
-import { ZodType, z } from 'zod'
+import { SafeAction } from 'next-safe-action'
+import { Schema, ZodType, z } from 'zod'
+import {
+  addPostFormSchema,
+  addUserFormSchema,
+  contactFormSchema,
+  loginFormSchema
+} from './formSchema'
 
 //!TODO CHECK ALL TYPES
 
@@ -8,6 +14,7 @@ export type TBlogPost = {
   descr: string
   img?: string
   userId: string
+  _id: string
   slug: string
   createdAt: Date
 }
@@ -16,10 +23,9 @@ export type TUserPost = {
   username: string
   email: string
   img?: string
-  password: string
-  slug: string
   isAdmin: boolean
   createdAt: Date
+  _id: string
 }
 
 type TextInputType = {
@@ -31,6 +37,16 @@ type SelectInputType = {
   selectVariants: string[]
 }
 
+export type FormLabel = 'post' | 'user' | 'login' | 'contact'
+
+export type FormInfo = {
+  [key in FormLabel]: {
+    fieldsData: FieldData[]
+    formSchema: ZodType
+    action: SafeAction<ZodType, any>
+  }
+}
+
 export type FieldData = {
   fieldName: string
   defaultValue: string
@@ -39,6 +55,26 @@ export type FieldData = {
 
 export type CustomFormProps = {
   btnContent?: string
-  fieldsData: FieldData[]
-  formSchema: ZodType
+  label: FormLabel
+  successCb?: (data: any) => void
 }
+
+export type AdminDashboardProps<T> = {
+  label: 'user' | 'post'
+  getItems: () => Promise<T[]>
+  renderItems: (data: T[]) => React.ReactNode
+}
+
+export type AdminItemProps<T extends ZodType<any, any>> = {
+  img?: string
+  title: string
+  href: string
+  id: string
+  onDelete: SafeAction<T, any>
+  showTooltip?: boolean
+}
+
+export type PostData = z.infer<typeof addPostFormSchema>
+export type UserData = z.infer<typeof addUserFormSchema>
+export type LoginData = z.infer<typeof loginFormSchema>
+export type ContactData = z.infer<typeof contactFormSchema>

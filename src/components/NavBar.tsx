@@ -7,6 +7,7 @@ import { LogIn } from 'lucide-react'
 import MobileMenuBar from './MobileMenuBar'
 import ToggleTheme from './ToggleTheme'
 import { usePathname } from 'next/navigation'
+import AdminBtn from './AdminBtn'
 
 export const routes = [
   { label: 'Homepage', href: '/' },
@@ -55,6 +56,7 @@ export default function NavBar() {
           </Link>
         </Button>
         <ToggleTheme />
+        <AdminBtn />
       </nav>
     </header>
   )

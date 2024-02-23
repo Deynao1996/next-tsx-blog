@@ -1,5 +1,9 @@
-import AdminAddList from '@/components/AdminAddList'
+import AdminDashboard from '@/components/AdminDashboard'
+import AdminItem from '@/components/AdminItem'
 import { Separator } from '@/components/ui/separator'
+import { removePost } from '@/lib/actions'
+import { getPosts, getUsers } from '@/lib/data'
+import { type TBlogPost, type TUserPost } from '@/lib/types'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -11,11 +15,42 @@ export default function AdminPage() {
   return (
     <section className="py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <AdminAddList label="user" />
+        <AdminDashboard
+          label="user"
+          getItems={getUsers}
+          renderItems={(data: TUserPost[]) =>
+            data.map((user) => (
+              <AdminItem
+                key={user._id}
+                id={user._id.toString()}
+                href={`/admin/user/${user._id}`}
+                showTooltip
+                img={user?.img}
+                title={user.username}
+                onDelete={removePost}
+              />
+            ))
+          }
+        />
       </div>
       <Separator className="my-14" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <AdminAddList label="post" />
+        <AdminDashboard
+          label="post"
+          getItems={getPosts}
+          renderItems={(data: TBlogPost[]) =>
+            data.map((post) => (
+              <AdminItem
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                img={post?.img}
+                id={post._id.toString()}
+                title={post.title}
+                onDelete={removePost}
+              />
+            ))
+          }
+        />
       </div>
     </section>
   )

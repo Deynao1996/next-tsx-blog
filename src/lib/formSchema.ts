@@ -1,16 +1,5 @@
 import { z } from 'zod'
 
-const selectValueToBoolean = (value: string) => {
-  switch (value) {
-    case 'yes':
-      return true
-    case 'no':
-      return false
-    default:
-      return false
-  }
-}
-
 export const addUserFormSchema = z.object({
   username: z.string().min(2, {
     message: 'Username must be at least 2 characters.'
@@ -20,16 +9,19 @@ export const addUserFormSchema = z.object({
     .string()
     .min(4, { message: 'Password must be at least 4 characters.' }),
   img: z.string().optional(),
-  isAdmin: z.string().transform(selectValueToBoolean)
+  isAdmin: z.enum(['no', 'yes', ''])
 })
 
 export const addPostFormSchema = z.object({
   title: z.string().min(2, {
     message: 'Title must be at least 2 characters.'
   }),
-  slug: z.string().min(2, {
-    message: 'Slug must be at least 2 characters.'
-  }),
+  slug: z
+    .string()
+    .transform((value) => value.replace(/\s+/g, ''))
+    .pipe(
+      z.string().min(2, { message: 'Slug must be at least 5 characters.' })
+    ),
   userId: z.string().min(2, {
     message: 'UserId must be at least 5 characters.'
   }),
@@ -76,4 +68,14 @@ export const contactFormSchema = z.object({
     .max(160, {
       message: 'Message must not be longer than 30 characters.'
     })
+})
+
+export const responseSchema = z.object({
+  error: z.string().optional(),
+  successMessage: z.string().optional(),
+  data: z.unknown().optional()
+})
+
+export const removePostSchema = z.object({
+  id: z.string().min(1)
 })

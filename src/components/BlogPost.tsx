@@ -16,6 +16,7 @@ export default function BlogPost({
         <div className="w-full h-full rounded-md relative overflow-hidden">
           <Image
             src={img ? img : placeholder}
+            priority={img ? false : true}
             alt={title}
             fill
             className="object-cover"
