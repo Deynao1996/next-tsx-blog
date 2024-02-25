@@ -3,9 +3,17 @@ import {
   addPostFormSchema,
   addUserFormSchema,
   contactFormSchema,
-  loginFormSchema
+  loginFormSchema,
+  registerUserFormSchema
 } from './lib/formSchema'
 import { FieldData, FormInfo } from './lib/types'
+
+export const routes = [
+  { label: 'Homepage', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'Blog', href: '/blog' }
+] as const
 
 export const loginFieldsData: FieldData[] = [
   {
@@ -101,6 +109,28 @@ export const newUserFieldData: FieldData[] = [
   }
 ] as const
 
+export const registerUserFieldData: FieldData[] = [
+  { fieldName: 'username', defaultValue: '', label: 'Username', type: 'text' },
+  {
+    fieldName: 'email',
+    defaultValue: '',
+    label: 'Email',
+    type: 'email'
+  },
+  {
+    fieldName: 'password',
+    defaultValue: '',
+    label: 'Password',
+    type: 'password'
+  },
+  {
+    fieldName: 'confirmPassword',
+    defaultValue: '',
+    label: 'Confirm Password',
+    type: 'password'
+  }
+] as const
+
 export const formInfo: FormInfo = {
   post: {
     fieldsData: newPostFieldData,
@@ -121,5 +151,10 @@ export const formInfo: FormInfo = {
     fieldsData: contactFieldsData,
     formSchema: contactFormSchema,
     action: contactUs
+  },
+  register: {
+    fieldsData: registerUserFieldData,
+    formSchema: registerUserFormSchema,
+    action: addUser
   }
 } as const

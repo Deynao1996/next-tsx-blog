@@ -12,6 +12,22 @@ export const addUserFormSchema = z.object({
   isAdmin: z.enum(['no', 'yes', ''])
 })
 
+export const registerUserFormSchema = z
+  .object({
+    username: z.string().min(2, {
+      message: 'Username must be at least 2 characters.'
+    }),
+    email: z.string().email({ message: 'Invalid email address.' }),
+    password: z
+      .string()
+      .min(4, { message: 'Password must be at least 4 characters.' }),
+    confirmPassword: z.string()
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword']
+  })
+
 export const addPostFormSchema = z.object({
   title: z.string().min(2, {
     message: 'Title must be at least 2 characters.'

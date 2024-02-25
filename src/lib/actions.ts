@@ -13,10 +13,12 @@ import {
 import { createSafeActionClient } from 'next-safe-action'
 import { isValidObjectId } from 'mongoose'
 import { ContactData, LoginData, PostData, UserData } from './types'
+import { signIn, signOut } from './auth'
 
 export const action = createSafeActionClient()
 
 //TODO CHECK REVALIDATE PATH
+//TODO ADD ALL ACTIONS
 
 export const addPost = action(addPostFormSchema, async (postData: PostData) => {
   try {
@@ -91,3 +93,11 @@ export const contactUs = action(
     }
   }
 )
+
+export const handleGithubLogin = async () => {
+  await signIn('github')
+}
+
+export const handleLogout = async () => {
+  await signOut()
+}

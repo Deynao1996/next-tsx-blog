@@ -3,7 +3,7 @@ declare namespace NodeJS {
     MONGO_SECURE_KEY: string
     AUTH_SECRET: string
     AUTH_URL: string
-    GITHUB_CLIENT_ID: string
-    GITHUB_SECRET: string
+    AUTH_GITHUB_ID: string
+    AUTH_GITHUB_SECRET: string
   }
 }

@@ -37,7 +37,7 @@ type SelectInputType = {
   selectVariants: string[]
 }
 
-export type FormLabel = 'post' | 'user' | 'login' | 'contact'
+export type FormLabel = 'post' | 'user' | 'login' | 'contact' | 'register'
 
 export type FormInfo = {
   [key in FormLabel]: {

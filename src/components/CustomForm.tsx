@@ -116,7 +116,7 @@ export default function CustomForm({
             )}
           />
         ))}
-        <SubmitBtn disabled={status === 'executing'}>
+        <SubmitBtn disabled={status === 'executing'} className="capitalize">
           {btnContent ? btnContent : 'Submit'}
         </SubmitBtn>
       </form>

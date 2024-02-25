@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Menubar,
   MenubarContent,
@@ -7,9 +9,9 @@ import {
 } from '@/components/ui/menubar'
 import { Button } from './ui/button'
 import { MenuIcon } from 'lucide-react'
-import { routes } from './NavBar'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { routes } from '@/store'
 
 export default function MobileMenuBar() {
   const pathname = usePathname()
