@@ -19,7 +19,7 @@ export default function RegisterPage() {
           <CardFooter className="justify-center">
             <Button
               variant={'link'}
-              className="tracking-tight p-0"
+              className="tracking-tight p-0 text-accent-foreground"
               size={'sm'}
               asChild
             >

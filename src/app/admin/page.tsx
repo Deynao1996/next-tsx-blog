@@ -1,7 +1,7 @@
 import AdminDashboard from '@/components/AdminDashboard'
 import AdminItem from '@/components/AdminItem'
 import { Separator } from '@/components/ui/separator'
-import { removePost } from '@/lib/actions'
+import { removePost, removeUser } from '@/lib/actions'
 import { getPosts, getUsers } from '@/lib/data'
 import { type TBlogPost, type TUserPost } from '@/lib/types'
 import { Metadata } from 'next'
@@ -27,7 +27,7 @@ export default function AdminPage() {
                 showTooltip
                 img={user?.img}
                 title={user.username}
-                onDelete={removePost}
+                onDelete={removeUser}
               />
             ))
           }

@@ -2,34 +2,20 @@ import { useToast } from '@/components/ui/use-toast'
 import { responseSchema } from '@/lib/formSchema'
 import { SafeAction } from 'next-safe-action'
 import { useAction } from 'next-safe-action/hooks'
-import { ZodType } from 'zod'
+import { ZodType, z } from 'zod'
 
 const useHandleAction = (
   action: SafeAction<ZodType, any>,
+  reset?: () => void,
   cb?: (data: any) => void
 ) => {
   const { toast } = useToast()
-  const { execute, status, reset } = useAction(action, {
+  const { execute, status } = useAction(action, {
     onSuccess: (data) => {
       const result = responseSchema.safeParse(data)
 
       if (result.success) {
-        if (result.data.successMessage) {
-          toast({
-            title: result.data.successMessage,
-            variant: 'default'
-          })
-          reset()
-        }
-        if (result.data.error) {
-          toast({
-            title: result.data.error,
-            variant: 'destructive'
-          })
-        }
-        if (result.data.data && cb) {
-          cb(result.data.data)
-        }
+        handleParseValidationSuccess(result.data)
       } else {
         toast({
           title: 'Validation error',
@@ -48,6 +34,25 @@ const useHandleAction = (
       })
     }
   })
+
+  function handleParseValidationSuccess(data: z.infer<typeof responseSchema>) {
+    if (data.successMessage) {
+      reset?.()
+      toast({
+        title: data.successMessage,
+        variant: 'default'
+      })
+    }
+    if (data.error) {
+      toast({
+        title: data.error,
+        variant: 'destructive'
+      })
+    }
+    if (data.data && cb) {
+      cb(data.data)
+    }
+  }
 
   return {
     execute,

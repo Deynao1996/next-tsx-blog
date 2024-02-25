@@ -1,4 +1,4 @@
-import { addPost, addUser, contactUs, login } from './lib/actions'
+import { addPost, addUser, contactUs, login, registerUser } from './lib/actions'
 import {
   addPostFormSchema,
   addUserFormSchema,
@@ -155,6 +155,6 @@ export const formInfo: FormInfo = {
   register: {
     fieldsData: registerUserFieldData,
     formSchema: registerUserFormSchema,
-    action: addUser
+    action: registerUser
   }
 } as const

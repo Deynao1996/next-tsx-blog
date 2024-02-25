@@ -4,7 +4,8 @@ import {
   addPostFormSchema,
   addUserFormSchema,
   contactFormSchema,
-  loginFormSchema
+  loginFormSchema,
+  registerUserFormSchema
 } from './formSchema'
 
 //!TODO CHECK ALL TYPES
@@ -78,3 +79,4 @@ export type PostData = z.infer<typeof addPostFormSchema>
 export type UserData = z.infer<typeof addUserFormSchema>
 export type LoginData = z.infer<typeof loginFormSchema>
 export type ContactData = z.infer<typeof contactFormSchema>
+export type RegisteredUserData = z.infer<typeof registerUserFormSchema>

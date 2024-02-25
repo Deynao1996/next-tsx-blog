@@ -92,6 +92,6 @@ export const responseSchema = z.object({
   data: z.unknown().optional()
 })
 
-export const removePostSchema = z.object({
+export const removeItemSchema = z.object({
   id: z.string().min(1)
 })

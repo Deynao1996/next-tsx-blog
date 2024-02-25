@@ -8,11 +8,19 @@ import {
   addUserFormSchema,
   contactFormSchema,
   loginFormSchema,
-  removePostSchema
+  registerUserFormSchema,
+  removeItemSchema
 } from './formSchema'
 import { createSafeActionClient } from 'next-safe-action'
 import { isValidObjectId } from 'mongoose'
-import { ContactData, LoginData, PostData, UserData } from './types'
+import {
+  ContactData,
+  LoginData,
+  PostData,
+  RegisteredUserData,
+  UserData
+} from './types'
+import bcrypt from 'bcrypt'
 import { signIn, signOut } from './auth'
 
 export const action = createSafeActionClient()
@@ -43,13 +51,13 @@ export const addPost = action(addPostFormSchema, async (postData: PostData) => {
 })
 
 export const removePost = action(
-  removePostSchema,
+  removeItemSchema,
   async ({ id }: { id: string }) => {
     try {
       await connectToDb()
 
-      const isValidUserId = isValidObjectId(id)
-      if (!isValidUserId) return { error: 'Invalid post ID' }
+      const isPostUserId = isValidObjectId(id)
+      if (!isPostUserId) return { error: 'Invalid post ID' }
 
       const res = await Post.findByIdAndDelete(id)
       if (!res) return { error: 'Post with provided id does not exist' }
@@ -72,6 +80,26 @@ export const addUser = action(addUserFormSchema, async (postData: UserData) => {
   }
 })
 
+export const removeUser = action(
+  removeItemSchema,
+  async ({ id }: { id: string }) => {
+    try {
+      await connectToDb()
+
+      const isValidUserId = isValidObjectId(id)
+      if (!isValidUserId) return { error: 'Invalid user ID' }
+
+      const res = await User.findByIdAndDelete(id)
+      if (!res) return { error: 'User with provided id does not exist' }
+
+      revalidatePath('/admin')
+      return { successMessage: 'User deleted successfully' }
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
+)
+
 export const login = action(loginFormSchema, async (postData: LoginData) => {
   try {
     await connectToDb()
@@ -80,6 +108,31 @@ export const login = action(loginFormSchema, async (postData: LoginData) => {
     throw new Error(error.message)
   }
 })
+
+export const registerUser = action(
+  registerUserFormSchema,
+  async (postData: RegisteredUserData) => {
+    try {
+      await connectToDb()
+      const currentUser = await User.findOne({ email: postData.email })
+      if (currentUser)
+        return { error: 'User with provided email already exists' }
+
+      const salt = await bcrypt.genSalt(10)
+      const hashedPassword = await bcrypt.hash(postData.password, salt)
+
+      const newUser = new User({
+        ...postData,
+        password: hashedPassword
+      })
+      await newUser.save()
+
+      return { successMessage: 'User created successfully' }
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
+)
 
 export const contactUs = action(
   contactFormSchema,

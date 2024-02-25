@@ -27,10 +27,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { getDefaultValueFromFields } from '@/lib/utils'
 import { type CustomFormProps, type FieldData } from '@/lib/types'
 import { z } from 'zod'
-import { addPost } from '@/lib/actions'
-import { useAction } from 'next-safe-action/hooks'
-import { responseSchema } from '@/lib/formSchema'
-import { useToast } from '@/components/ui/use-toast'
 import { formInfo } from '@/store'
 import { useHandleAction } from '@/hooks/useHandleAction'
 
@@ -44,7 +40,7 @@ export default function CustomForm({
     resolver: zodResolver(formSchema),
     defaultValues: getDefaultValueFromFields(fieldsData)
   })
-  const { execute, status } = useHandleAction(action, successCb)
+  const { execute, status } = useHandleAction(action, form.reset, successCb)
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = async (data) => {
     execute(data)

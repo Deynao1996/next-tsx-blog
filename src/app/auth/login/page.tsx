@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import Login from '@/components/Login'
 import Verify from '@/components/Verify'
 import { handleGithubLogin } from '@/lib/actions'
 import { Button } from '@/components/ui/button'
@@ -21,7 +20,7 @@ export default function LoginPage() {
           <CardFooter className="justify-center">
             <Button
               variant={'link'}
-              className="tracking-tight p-0"
+              className="tracking-tight p-0 text-accent-foreground"
               size={'sm'}
               asChild
             >
