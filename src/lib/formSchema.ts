@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import { z } from 'zod'
 
 export const addUserFormSchema = z.object({
@@ -28,7 +29,7 @@ export const registerUserFormSchema = z
     path: ['confirmPassword']
   })
 
-export const addPostFormSchema = z.object({
+export const postFormSchema = z.object({
   title: z.string().min(2, {
     message: 'Title must be at least 2 characters.'
   }),
@@ -49,7 +50,9 @@ export const addPostFormSchema = z.object({
     })
     .max(160, {
       message: 'Description must not be longer than 30 characters.'
-    })
+    }),
+  createdAt: z.date().optional(),
+  _id: z.string().optional()
 })
 
 export const loginFormSchema = z.object({
@@ -89,7 +92,8 @@ export const contactFormSchema = z.object({
 export const responseSchema = z.object({
   error: z.string().optional(),
   successMessage: z.string().optional(),
-  data: z.unknown().optional()
+  data: z.unknown().optional(),
+  redirectURL: z.string().optional()
 })
 
 export const removeItemSchema = z.object({

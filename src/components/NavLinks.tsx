@@ -10,9 +10,10 @@ import ToggleTheme from './ToggleTheme'
 import { handleLogout } from '@/lib/actions'
 import { Session } from 'next-auth'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { CustomSession } from '@/lib/types'
 
 type NavLinksProps = {
-  session: Session | null
+  session: CustomSession | null
 }
 
 export default function NavLinks({ session }: NavLinksProps) {
@@ -76,24 +77,29 @@ export default function NavLinks({ session }: NavLinksProps) {
         </Button>
       )}
       <ToggleTheme />
-      {session?.user && (
-        <div className="relative">
-          <span className="absolute flex h-2 w-2 z-10 bottom-[5%] right-[5%]">
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-          </span>
-          <Avatar className="size-9">
-            <AvatarImage src={session?.user?.image ?? ''} />
-            <AvatarFallback>{getInitials(session?.user?.name)}</AvatarFallback>
-          </Avatar>
-        </div>
-      )}
-      {false && (
+      {session?.user?.isAdmin && (
         <Button variant={'secondary'} size={'icon'} asChild>
           <Link href="/admin" className="flex items-center gap-5">
             <span className="sr-only">Dashboard</span>
             <Lock className="h-5 w-5" />
           </Link>
         </Button>
+      )}
+      {session?.user && (
+        <div className="relative">
+          <span className="absolute flex h-2 w-2 z-10 bottom-[5%] right-[5%]">
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+          </span>
+          <Avatar className="size-9">
+            <AvatarImage
+              src={session?.user?.image ?? ''}
+              className="object-cover"
+            />
+            <AvatarFallback className="cursor-default">
+              {getInitials(session?.user?.name)}
+            </AvatarFallback>
+          </Avatar>
+        </div>
       )}
     </nav>
   )

@@ -1,14 +1,15 @@
 import { SafeAction } from 'next-safe-action'
-import { Schema, ZodType, z } from 'zod'
+import { ZodType, z } from 'zod'
 import {
-  addPostFormSchema,
+  postFormSchema,
   addUserFormSchema,
   contactFormSchema,
   loginFormSchema,
   registerUserFormSchema
 } from './formSchema'
-
-//!TODO CHECK ALL TYPES
+import { User } from 'next-auth'
+import { JWT } from 'next-auth/jwt'
+import { NextRequest } from 'next/server'
 
 export type TBlogPost = {
   title: string
@@ -75,8 +76,37 @@ export type AdminItemProps<T extends ZodType<any, any>> = {
   showTooltip?: boolean
 }
 
-export type PostData = z.infer<typeof addPostFormSchema>
+export type PostData = z.infer<typeof postFormSchema>
 export type UserData = z.infer<typeof addUserFormSchema>
 export type LoginData = z.infer<typeof loginFormSchema>
 export type ContactData = z.infer<typeof contactFormSchema>
 export type RegisteredUserData = z.infer<typeof registerUserFormSchema>
+
+type CustomUser = User & {
+  isAdmin?: boolean
+}
+
+type CustomToken = JWT & {
+  id?: string
+  isAdmin?: boolean
+}
+
+export type CustomSession = {
+  user?: CustomUser
+  expires: string
+}
+
+export type TJwt = {
+  token: CustomToken
+  user: CustomUser
+}
+
+export type TSession = {
+  session: CustomSession
+  token: CustomToken
+}
+
+export type Authorized = {
+  auth: CustomSession | null
+  request: NextRequest
+}

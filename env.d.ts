@@ -5,5 +5,6 @@ declare namespace NodeJS {
     AUTH_URL: string
     AUTH_GITHUB_ID: string
     AUTH_GITHUB_SECRET: string
+    BASE_URL: string
   }
 }

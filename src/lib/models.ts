@@ -7,13 +7,15 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       min: 3,
-      max: 20
+      max: 20,
+      lowercase: true
     },
     email: {
       type: String,
       required: true,
       unique: true,
-      max: 50
+      max: 50,
+      lowercase: true
     },
     password: {
       type: String,
@@ -21,6 +23,34 @@ const userSchema = new mongoose.Schema(
     },
     img: { type: String },
     isAdmin: { type: Boolean, default: false }
+  },
+  { timestamps: true }
+)
+
+const contactSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      min: 3,
+      max: 20,
+      lowercase: true
+    },
+    email: {
+      type: String,
+      required: true,
+      max: 50,
+      lowercase: true
+    },
+    phone: {
+      type: String
+    },
+    message: {
+      type: String,
+      min: 10,
+      max: 160,
+      required: true
+    }
   },
   { timestamps: true }
 )
@@ -44,3 +74,5 @@ const postSchema = new mongoose.Schema(
 
 export const User = mongoose.models?.User || mongoose.model('User', userSchema)
 export const Post = mongoose.models?.Post || mongoose.model('Post', postSchema)
+export const Contact =
+  mongoose.models?.Contact || mongoose.model('Contact', contactSchema)

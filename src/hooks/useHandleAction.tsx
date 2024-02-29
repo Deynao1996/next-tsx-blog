@@ -2,6 +2,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { responseSchema } from '@/lib/formSchema'
 import { SafeAction } from 'next-safe-action'
 import { useAction } from 'next-safe-action/hooks'
+import { useRouter } from 'next/navigation'
 import { ZodType, z } from 'zod'
 
 const useHandleAction = (
@@ -10,6 +11,7 @@ const useHandleAction = (
   cb?: (data: any) => void
 ) => {
   const { toast } = useToast()
+  const router = useRouter()
   const { execute, status } = useAction(action, {
     onSuccess: (data) => {
       const result = responseSchema.safeParse(data)
@@ -26,7 +28,7 @@ const useHandleAction = (
     onError: (error) => {
       let errorMsg = 'Something went wrong'
       if (error.fetchError) errorMsg = 'Failed to fetch'
-      if (error.serverError) errorMsg = 'Server error'
+      if (error.serverError) errorMsg = error.serverError
       if (error.validationErrors) errorMsg = 'Validation error'
       toast({
         title: errorMsg,

@@ -107,7 +107,9 @@ export default function CustomForm({
             render={({ field }) => (
               <FormItem>
                 <FormControl>{renderInput(item, field)}</FormControl>
-                <FormMessage className="h-4"> </FormMessage>
+                <FormMessage className="h-4 p-0 !mt-0.5 text-[0.7rem]">
+                  {' '}
+                </FormMessage>
               </FormItem>
             )}
           />

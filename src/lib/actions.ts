@@ -1,17 +1,17 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { Post, User } from './models'
+import { Contact, Post, User } from './models'
 import { connectToDb } from './utils'
 import {
-  addPostFormSchema,
+  postFormSchema,
   addUserFormSchema,
   contactFormSchema,
   loginFormSchema,
   registerUserFormSchema,
   removeItemSchema
 } from './formSchema'
-import { createSafeActionClient } from 'next-safe-action'
+import { DEFAULT_SERVER_ERROR, createSafeActionClient } from 'next-safe-action'
 import { isValidObjectId } from 'mongoose'
 import {
   ContactData,
@@ -23,12 +23,19 @@ import {
 import bcrypt from 'bcrypt'
 import { signIn, signOut } from './auth'
 
-export const action = createSafeActionClient()
+class UserAlreadyExistsError extends Error {}
 
-//TODO CHECK REVALIDATE PATH
-//TODO ADD ALL ACTIONS
+export const action = createSafeActionClient({
+  handleReturnedServerError(e) {
+    if (e instanceof UserAlreadyExistsError) {
+      return e.message
+    }
 
-export const addPost = action(addPostFormSchema, async (postData: PostData) => {
+    return DEFAULT_SERVER_ERROR
+  }
+})
+
+export const addPost = action(postFormSchema, async (postData: PostData) => {
   try {
     await connectToDb()
 
@@ -44,6 +51,7 @@ export const addPost = action(addPostFormSchema, async (postData: PostData) => {
     const newPost = new Post(postData)
     await newPost.save()
     revalidatePath('/blog')
+    revalidatePath('/admin')
     return { successMessage: 'Post created successfully' }
   } catch (error: any) {
     throw new Error(error.message)
@@ -63,6 +71,7 @@ export const removePost = action(
       if (!res) return { error: 'Post with provided id does not exist' }
 
       revalidatePath('/blog')
+      revalidatePath('/admin')
       return { successMessage: 'Post deleted successfully' }
     } catch (error: any) {
       throw new Error(error.message)
@@ -73,7 +82,25 @@ export const removePost = action(
 export const addUser = action(addUserFormSchema, async (postData: UserData) => {
   try {
     await connectToDb()
-    console.log(postData)
+
+    const isUserNameExist = await User.findOne({ username: postData.username })
+    if (isUserNameExist)
+      return { error: 'User with provided username already exist' }
+
+    const isEmailExist = await User.findOne({ email: postData.email })
+    if (isEmailExist) return { error: 'User with provided email already exist' }
+
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(postData.password, salt)
+
+    const newUser = new User({
+      ...postData,
+      password: hashedPassword,
+      isAdmin: postData.isAdmin === 'yes' ? true : false
+    })
+    await newUser.save()
+
+    revalidatePath('/admin')
     return { successMessage: 'User created successfully' }
   } catch (error: any) {
     throw new Error(error.message)
@@ -90,6 +117,7 @@ export const removeUser = action(
       if (!isValidUserId) return { error: 'Invalid user ID' }
 
       const res = await User.findByIdAndDelete(id)
+      await Post.deleteMany({ userId: id })
       if (!res) return { error: 'User with provided id does not exist' }
 
       revalidatePath('/admin')
@@ -101,11 +129,20 @@ export const removeUser = action(
 )
 
 export const login = action(loginFormSchema, async (postData: LoginData) => {
+  const { username, password } = postData
   try {
     await connectToDb()
-    return { successMessage: 'Logged in' }
+    await signIn('credentials', {
+      username: username.toLocaleLowerCase(),
+      password
+    })
+
+    return { data: process.env.BASE_URL }
   } catch (error: any) {
-    throw new Error(error.message)
+    if (error.kind === 'signIn') {
+      throw new UserAlreadyExistsError('Wrong credentials')
+    }
+    throw error
   }
 })
 
@@ -136,11 +173,23 @@ export const registerUser = action(
 
 export const contactUs = action(
   contactFormSchema,
-  async (postData: ContactData) => {
+  async (contactData: ContactData) => {
     try {
       await connectToDb()
 
-      return { successMessage: 'Thanks for contacting us' }
+      const isUserNameExist = await User.findOne({
+        username: contactData.username
+      })
+      if (!isUserNameExist)
+        return { error: 'User with provided username does not exist' }
+
+      const isEmailExist = await User.findOne({ email: contactData.email })
+      if (!isEmailExist)
+        return { error: 'User with provided email does not exist' }
+
+      const newContact = new Contact(contactData)
+      await newContact.save()
+      return { successMessage: 'Thanks for contacting us!' }
     } catch (error: any) {
       throw new Error(error.message)
     }

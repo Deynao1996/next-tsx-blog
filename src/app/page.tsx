@@ -3,9 +3,6 @@ import Image from 'next/image'
 import React from 'react'
 import promo from '../../public/promo.png'
 
-//TODO CHECK ADVANCE SERVER FETCHING
-//TODO CHECK ADVANCE TYPESCRIPT
-
 export default function HomePage() {
   return (
     <main className="flex gap-10 items-center">
