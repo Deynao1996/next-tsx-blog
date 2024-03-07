@@ -1,8 +1,7 @@
 import React from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
-import { Facebook, Github, Instagram, Twitter } from 'lucide-react'
-import { Separator } from './ui/separator'
+import Stats from './Stats'
 
 export default function Home() {
   return (
@@ -22,23 +21,7 @@ export default function Home() {
           <Link href="/contact">Contact</Link>
         </Button>
       </div>
-      <div className="flex mt-10 md:space-x-4 h-5 gap-3 md:gap-0 flex-wrap justify-start">
-        <div className="flex items-center justify-center gap-2">
-          <Instagram /> Instagram
-        </div>
-        <Separator orientation="vertical" className="hidden md:block" />
-        <div className="flex items-center justify-center gap-2">
-          <Facebook /> Facebook
-        </div>
-        <Separator orientation="vertical" className="hidden md:block" />
-        <div className="flex items-center justify-center gap-2">
-          <Github /> Github
-        </div>
-        <Separator orientation="vertical" className="hidden md:block" />
-        <div className="flex items-center justify-center gap-2">
-          <Twitter /> Twitter
-        </div>
-      </div>
+      <Stats />
     </>
   )
 }
