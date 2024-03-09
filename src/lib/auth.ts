@@ -1,17 +1,12 @@
-import NextAuth, {
-  Account,
-  Profile,
-  Session,
-  User as UserType
-} from 'next-auth'
+import NextAuth, { Profile } from 'next-auth'
 import GitHub from 'next-auth/providers/github'
 import CredentialProvider from 'next-auth/providers/credentials'
+import GoogleProvider from 'next-auth/providers/google'
 import { connectToDb } from './utils'
 import { User } from './models'
 import bcrypt from 'bcrypt'
 import { loginFormSchema } from './formSchema'
 import { authConfig } from './auth.config'
-import { NextRequest } from 'next/server'
 
 async function credentialLogin(credentials: Partial<Record<string, unknown>>) {
   const parsedCredentials = loginFormSchema.safeParse(credentials)
@@ -56,6 +51,25 @@ async function githubCallback(profile?: Profile) {
   }
 }
 
+async function googleCallback(profile?: Profile) {
+  if (!profile) return false
+  connectToDb()
+  try {
+    const user = await User.findOne({ email: profile.email })
+    if (!user) {
+      const newUser = new User({
+        username: profile.name,
+        email: profile.email,
+        img: profile.picture
+      })
+      await newUser.save()
+    }
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
 export const {
   handlers: { GET, POST },
   auth,
@@ -67,6 +81,10 @@ export const {
     GitHub({
       clientId: process.env.AUTH_GITHUB_ID,
       clientSecret: process.env.AUTH_GITHUB_SECRET
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET
     }),
     CredentialProvider({
       async authorize(credentials) {
@@ -93,6 +111,7 @@ export const {
         if (!user) return false
       }
       if (account?.provider === 'github') await githubCallback(profile)
+      if (account?.provider === 'google') await googleCallback(profile)
       return true
     },
     ...authConfig.callbacks

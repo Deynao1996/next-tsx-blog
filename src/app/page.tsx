@@ -3,6 +3,12 @@ import Image from 'next/image'
 import React from 'react'
 import promo from '../../public/promo.png'
 
+//TODO IMPLEMENT GOOGLE AUTH
+//TODO REDESIGN BLOG PAGE
+//TODO CHECK REMIND PASSWORD AND EMAIL CONFIRMATION
+//TODO ADMIN DASHBOARD PAGINATION OR TABLES
+//TODO BLOG PAGE INFINITE PAGINATION CHECK
+
 export default function HomePage() {
   return (
     <main className="flex gap-10 items-center">
