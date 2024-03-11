@@ -23,7 +23,7 @@ export default function AdminPage() {
               <AdminItem
                 key={user._id}
                 id={user._id.toString()}
-                href={`/admin/user/${user._id}`}
+                href={`/user/${user._id}`}
                 showTooltip
                 img={user?.img}
                 title={user.username}

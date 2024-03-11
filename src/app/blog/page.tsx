@@ -14,20 +14,22 @@ export default async function BlogPage() {
   const posts: TBlogPost[] = await getPosts()
 
   return (
-    <section className="py-10">
-      <Suspense fallback={<Loading />}>
-        {posts?.length ? (
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post, i) => (
-              <BlogPost post={post} key={i} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-lg font-semibold text-center">
-            No posts here yet &#128580;
-          </div>
-        )}
-      </Suspense>
-    </section>
+    <>
+      <section className="py-10">
+        <Suspense fallback={<Loading />}>
+          {posts?.length ? (
+            <div className="flex flex-wrap gap-2 md:gap-8 items-start">
+              {posts.map((post, i) => (
+                <BlogPost post={post} key={i} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-lg font-semibold text-center">
+              No posts here yet &#128580;
+            </div>
+          )}
+        </Suspense>
+      </section>
+    </>
   )
 }

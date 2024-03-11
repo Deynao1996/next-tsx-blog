@@ -9,14 +9,19 @@ export default async function NavBar() {
   const session = await auth()
 
   return (
-    <header className="flex justify-between items-center">
-      <div className="flex items-center gap-2">
-        <MobileMenuBar />
-        <Link href="/" className="font-bold tracking-tight text-xl md:text-2xl">
-          <Logo />
-        </Link>
-      </div>
-      <NavLinks session={session} />
-    </header>
+    <div className="sticky">
+      <header className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <MobileMenuBar />
+          <Link
+            href="/"
+            className="font-bold tracking-tight text-xl md:text-2xl"
+          >
+            <Logo />
+          </Link>
+        </div>
+        <NavLinks session={session} />
+      </header>
+    </div>
   )
 }

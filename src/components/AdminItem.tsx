@@ -20,7 +20,7 @@ export default function AdminItem<T extends ZodType<any, any>>({
   const { execute, status } = useHandleAction(onDelete)
 
   return (
-    <li className="flex justify-between items-center">
+    <li className="flex justify-between sm:items-center flex-col sm:flex-row gap-5">
       <ConditionalTooltipWrap condition={showTooltip} title={id}>
         <div
           className={`flex items-center gap-3 ${showTooltip && 'cursor-help'}`}
@@ -31,11 +31,11 @@ export default function AdminItem<T extends ZodType<any, any>>({
               {title.slice(0, 1)}
             </AvatarFallback>
           </Avatar>
-          <div className="capitalize">{title}</div>
+          <div className="capitalize line-clamp-1">{title}</div>
         </div>
       </ConditionalTooltipWrap>
-      <div className="space-x-5">
-        <Button asChild variant={'secondary'} size={'sm'}>
+      <div className="space-x-3 flex">
+        <Button asChild variant={'secondary'} size={'sm'} className="flex-1">
           <Link href={href}>View</Link>
         </Button>
         <Button
@@ -44,6 +44,7 @@ export default function AdminItem<T extends ZodType<any, any>>({
           onClick={() => execute({ id })}
           aria-label={`Delete ${title}`}
           size={'sm'}
+          className="flex-1"
         >
           Delete
         </Button>

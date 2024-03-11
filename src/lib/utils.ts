@@ -14,6 +14,14 @@ export function getDefaultValueFromFields(fields: FieldData[]) {
   }, {} as { [key: string]: string })
 }
 
+export function getNumberFromString(str: string) {
+  return Number(str.replace(/\D/g, ''))
+}
+
+export function getRndFromRange(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min) + min)
+}
+
 let isConnected = false
 export async function connectToDb() {
   try {

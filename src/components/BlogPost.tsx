@@ -1,43 +1,44 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
 import { type TBlogPost } from '@/lib/types'
 import Image from 'next/image'
-import placeholder from '../../public/placeholder.jpg'
+import UserPost from './UserPost'
+import { ExternalLink } from 'lucide-react'
 
 export default function BlogPost({
-  post: { descr, slug, title, userId, img }
+  post: { descr, slug, title, userId, img, imageHeight }
 }: {
   post: TBlogPost
 }) {
   return (
-    <div className="sm:max-w-[280px]">
-      <div className="sm:max-w-full aspect-[4/3] sm:aspect-[3/4] mb-5 flex items-center">
-        <div className="w-full h-full rounded-md relative overflow-hidden">
+    <article className="mb-4 break-inside p-6 rounded-xl bg-muted dark:bg-slate-800 flex flex-col bg-clip-border flex-1 min-w-[320px]">
+      <UserPost userId={userId} />
+      <div className="flex justify-between my-4">
+        <span className="text-2xl font-extrabold capitalize">{title}</span>
+        <Button asChild size={'icon'} variant={'ghost'}>
+          <Link href={`/blog/${slug}`}>
+            <ExternalLink />
+          </Link>
+        </Button>
+      </div>
+      {img && imageHeight && (
+        <div
+          style={{ height: imageHeight + 'px' }}
+          className={`py-4 w-full my-2 rounded-md relative overflow-hidden`}
+        >
           <Image
-            src={img ? img : placeholder}
-            priority={img ? false : true}
+            src={img}
+            priority={!!img}
             alt={title}
             fill
-            className="object-cover"
+            className="object-cover rounded-lg"
             sizes="(max-width: 600px) 100vw, 50vw"
           />
         </div>
-        <Button
-          variant={'link'}
-          className="rotate-180"
-          asChild
-          style={{ writingMode: 'vertical-rl' }}
-        >
-          <Link href={`/blog/${slug}`}>Learn more</Link>
-        </Button>
-      </div>
-      <p className="max-w-[90%] font-medium tracking-tight uppercase mb-3">
-        {title}
-      </p>
-      <div className="max-w-[90%] text-xs text-muted-foreground tracking-tighter overflow-hidden inline-block text-ellipsis text-nowrap">
-        {descr}
-      </div>
-    </div>
+      )}
+
+      <p className="line-clamp-3 mt-2">{descr}</p>
+    </article>
   )
 }

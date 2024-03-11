@@ -1,15 +1,17 @@
 import { type TBlogPost, type TUserPost } from '@/lib/types'
 import { Post, User } from './models'
-import { connectToDb } from './utils'
+import { connectToDb, getRndFromRange } from './utils'
 import { unstable_noStore as noStore } from 'next/cache'
-import { postFormSchema } from './formSchema'
-import { z } from 'zod'
 
 export const getPosts = async () => {
   noStore()
   try {
     await connectToDb()
     const posts: TBlogPost[] = await Post.find()
+    posts.forEach((post) => {
+      post.imageHeight = getRndFromRange(200, 400)
+    })
+
     return posts
   } catch (error: any) {
     console.log(error.message)

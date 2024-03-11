@@ -11,7 +11,6 @@ const useHandleAction = (
   cb?: (data: any) => void
 ) => {
   const { toast } = useToast()
-  const router = useRouter()
   const { execute, status } = useAction(action, {
     onSuccess: (data) => {
       const result = responseSchema.safeParse(data)

@@ -15,6 +15,7 @@ export type TBlogPost = {
   title: string
   descr: string
   img?: string
+  imageHeight?: number
   userId: string
   _id: string
   slug: string
@@ -31,7 +32,7 @@ export type TUserPost = {
 }
 
 type TextInputType = {
-  type: 'text' | 'email' | 'tel' | 'password' | 'textarea'
+  type: 'text' | 'email' | 'tel' | 'password' | 'textarea' | 'file'
 }
 
 type SelectInputType = {

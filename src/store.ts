@@ -70,7 +70,7 @@ export const newPostFieldData: FieldData[] = [
     fieldName: 'img',
     defaultValue: '',
     label: 'Image',
-    type: 'text'
+    type: 'file'
   },
   {
     fieldName: 'descr',
@@ -97,8 +97,8 @@ export const newUserFieldData: FieldData[] = [
   {
     fieldName: 'img',
     defaultValue: '',
-    label: 'Image',
-    type: 'text'
+    label: 'Avatar',
+    type: 'file'
   },
   {
     fieldName: 'isAdmin',

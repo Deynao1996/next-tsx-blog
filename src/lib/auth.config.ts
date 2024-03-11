@@ -26,11 +26,14 @@ export const authConfig = {
       const isOnAdminPage = request.nextUrl.pathname.startsWith('/admin')
       const isOnBlogPage = request.nextUrl.pathname.startsWith('/blog')
       const isOnLoginPage = request.nextUrl.pathname.startsWith('/auth/login')
+      const isOnUserPage = request.nextUrl.pathname.startsWith('/user')
 
       //Redirect from dashboard
       if (isOnAdminPage && !user?.isAdmin) return false
       //Redirect from blog posts
       if (isOnBlogPage && !user) return false
+      //Redirect from user page
+      if (isOnUserPage && !user) return false
       //Redirect from login
       if (isOnLoginPage && user) {
         return Response.redirect(new URL('/', request.url))

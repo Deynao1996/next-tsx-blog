@@ -1,4 +1,3 @@
-import mongoose from 'mongoose'
 import { z } from 'zod'
 
 export const addUserFormSchema = z.object({
@@ -9,7 +8,10 @@ export const addUserFormSchema = z.object({
   password: z
     .string()
     .min(4, { message: 'Password must be at least 4 characters.' }),
-  img: z.string().optional(),
+  img: z.string().min(5, {
+    message:
+      'Required field. Press Send button to upload image before adding user.'
+  }),
   isAdmin: z.enum(['no', 'yes', ''])
 })
 
@@ -42,15 +44,13 @@ export const postFormSchema = z.object({
   userId: z.string().min(2, {
     message: 'UserId must be at least 5 characters.'
   }),
-  img: z.string().optional(),
-  descr: z
-    .string()
-    .min(10, {
-      message: 'Description must be at least 10 characters.'
-    })
-    .max(160, {
-      message: 'Description must not be longer than 30 characters.'
-    }),
+  img: z.string().min(5, {
+    message:
+      'Required field. Press Send button to upload image before adding post.'
+  }),
+  descr: z.string().min(10, {
+    message: 'Description must be at least 10 characters.'
+  }),
   createdAt: z.date().optional(),
   _id: z.string().optional()
 })

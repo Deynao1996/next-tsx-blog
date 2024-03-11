@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       min: 6
     },
-    img: { type: String },
+    img: { type: String, required: true },
     isAdmin: { type: Boolean, default: false }
   },
   { timestamps: true }
@@ -65,7 +65,7 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    img: { type: String },
+    img: { type: String, required: true },
     userId: { type: String, required: true },
     slug: { type: String, required: true, unique: true }
   },
