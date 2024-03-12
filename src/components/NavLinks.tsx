@@ -90,15 +90,17 @@ export default function NavLinks({ session }: NavLinksProps) {
           <span className="absolute flex h-2 w-2 z-10 bottom-[5%] right-[5%]">
             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
           </span>
-          <Avatar className="size-9">
-            <AvatarImage
-              src={session?.user?.image ?? ''}
-              className="object-cover"
-            />
-            <AvatarFallback className="cursor-default">
-              {getInitials(session?.user?.name)}
-            </AvatarFallback>
-          </Avatar>
+          <Link href={`/user/${session?.user?.id}`}>
+            <Avatar className="size-9">
+              <AvatarImage
+                src={session?.user?.image ?? ''}
+                className="object-cover"
+              />
+              <AvatarFallback className="cursor-default">
+                {getInitials(session?.user?.name)}
+              </AvatarFallback>
+            </Avatar>
+          </Link>
         </div>
       )}
     </nav>

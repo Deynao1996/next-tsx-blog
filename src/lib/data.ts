@@ -3,11 +3,12 @@ import { Post, User } from './models'
 import { connectToDb, getRndFromRange } from './utils'
 import { unstable_noStore as noStore } from 'next/cache'
 
-export const getPosts = async () => {
+export const getPosts = async (userId?: string) => {
   noStore()
   try {
     await connectToDb()
-    const posts: TBlogPost[] = await Post.find()
+    const query = userId ? { userId } : {}
+    const posts: TBlogPost[] = await Post.find(query).lean()
     posts.forEach((post) => {
       post.imageHeight = getRndFromRange(200, 400)
     })

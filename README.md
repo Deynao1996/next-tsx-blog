@@ -3,6 +3,7 @@
 Agency Blog is a TypeScript-based web application built with Next.js 14. It includes server-side rendering, actions, and utilizes the Shadcn UI library. The application features authentication, session management, an admin dashboard, and allows users to create and share their posts with others. Agency Blog supports both light and dark modes.
 
 ![Agency Blog Mockup](https://res.cloudinary.com/dkl9cqqui/image/upload/v1709870863/mock_updated_1_qhazbw.jpg)
+![Agency Blog Posts Grid](https://res.cloudinary.com/dkl9cqqui/image/upload/v1710239497/mockup-benta_1_kn6zus.jpg)
 
 ## Getting Started
 

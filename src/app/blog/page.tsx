@@ -12,6 +12,17 @@ export const metadata: Metadata = {
 
 export default async function BlogPage() {
   const posts: TBlogPost[] = await getPosts()
+  const rowsCount = 3
+
+  function setBlogGrid() {
+    const rows: TBlogPost[][] = Array.from({ length: rowsCount }, () => [])
+    for (let i = 0; i < posts.length; i++) {
+      rows[i % rowsCount].push(posts[i])
+    }
+    return rows
+  }
+
+  const rows = setBlogGrid()
 
   return (
     <>
@@ -19,8 +30,12 @@ export default async function BlogPage() {
         <Suspense fallback={<Loading />}>
           {posts?.length ? (
             <div className="flex flex-wrap gap-2 md:gap-8 items-start">
-              {posts.map((post, i) => (
-                <BlogPost post={post} key={i} />
+              {rows.map((row, i) => (
+                <div className="flex-1 flex flex-col gap-5" key={i}>
+                  {row.map((post, k) => (
+                    <BlogPost post={post} key={k} />
+                  ))}
+                </div>
               ))}
             </div>
           ) : (

@@ -29,7 +29,6 @@ import { type CustomFormProps, type FieldData } from '@/lib/types'
 import { z } from 'zod'
 import { formInfo } from '@/store'
 import { useHandleAction } from '@/hooks/useHandleAction'
-import { Label } from './ui/label'
 import FileInput from './FileInput'
 
 export default function CustomForm({

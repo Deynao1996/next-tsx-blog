@@ -1,8 +1,10 @@
-import { getSingleUser } from '@/lib/data'
-import { TUserPost } from '@/lib/types'
+import { getPosts, getSingleUser } from '@/lib/data'
+import { TBlogPost, TUserPost } from '@/lib/types'
 import Image from 'next/image'
 import React from 'react'
 import placeholder from '../../../../public/placeholder.jpg'
+import BlogPost from '@/components/BlogPost'
+import CreateUserPostDialog from '@/components/CreateUserPostDialog'
 
 export const generateMetadata = async ({
   params
@@ -17,6 +19,7 @@ export const generateMetadata = async ({
 
 export default async function UserPage({ params }: { params: { id: string } }) {
   const userData: TUserPost = await getSingleUser(params.id)
+  const posts: TBlogPost[] = await getPosts(params.id)
 
   return (
     <section className="py-10">
@@ -35,22 +38,29 @@ export default async function UserPage({ params }: { params: { id: string } }) {
           <div className="scroll-m-20 text-4xl font-extrabold max-w-full capitalize">
             {userData.username}
           </div>
-          <div className="space-y-3 mt-8">
-            <p>
-              <b>ID:</b> {userData._id}
-            </p>
+          <div className="space-y-3 my-8">
             <p>
               <b>Email:</b> {userData.email}
             </p>
             <p>
               <b>Created At:</b> {userData.createdAt.toString().slice(4, 16)}
             </p>
-            <p>
-              <b>Admin: </b> {userData.isAdmin ? 'Yes' : 'No'}
-            </p>
           </div>
+          {userData._id.toString() === params.id && <CreateUserPostDialog />}
         </div>
       </div>
+      {!!posts.length && (
+        <div className="mt-10">
+          <p className="scroll-m-20 text-2xl font-semibold tracking-tight mb-5">
+            User Posts
+          </p>
+          <div className="flex flex-wrap gap-8 items-start">
+            {posts.map((post) => (
+              <BlogPost post={post} key={post._id} />
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   )
 }

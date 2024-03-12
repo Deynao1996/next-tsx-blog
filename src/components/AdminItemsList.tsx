@@ -10,7 +10,7 @@ export default async function AdminItemsList<T>({
   const items: T[] = await getItems()
 
   return (
-    <ul className="space-y-4">
+    <ul className="space-y-4 max-h-[400px] overflow-y-scroll pr-5">
       {items.length === 0 && (
         <li className="text-lg text-primary-foreground">
           No items yet &#129300;
