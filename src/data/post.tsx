@@ -1,6 +1,6 @@
-import { type TBlogPost, type TUserPost } from '@/lib/types'
-import { Post, User } from './models'
-import { connectToDb, getRndFromRange } from './utils'
+import { Post } from '@/lib/models'
+import { TBlogPost } from '@/lib/types'
+import { connectToDb, getRndFromRange } from '@/lib/utils'
 import { unstable_noStore as noStore } from 'next/cache'
 
 export const getPosts = async (userId?: string) => {
@@ -20,18 +20,6 @@ export const getPosts = async (userId?: string) => {
   }
 }
 
-export const getUsers = async () => {
-  noStore()
-  try {
-    await connectToDb()
-    const users: TUserPost[] = await User.find()
-    return users
-  } catch (error: any) {
-    console.log(error.message)
-    throw new Error('Failed to fetch users!')
-  }
-}
-
 export const getSinglePost = async (slug: string) => {
   try {
     await connectToDb()
@@ -41,18 +29,5 @@ export const getSinglePost = async (slug: string) => {
   } catch (error: any) {
     console.log(error.message)
     throw new Error('Failed to fetch post!')
-  }
-}
-
-export const getSingleUser = async (id: string) => {
-  noStore()
-  try {
-    await connectToDb()
-    const post: TUserPost | null = await User.findById(id)
-    if (!post) throw new Error('Failed to find user!')
-    return post
-  } catch (error: any) {
-    console.log(error.message)
-    throw new Error('Failed to fetch user!')
   }
 }

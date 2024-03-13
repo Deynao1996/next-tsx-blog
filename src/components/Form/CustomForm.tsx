@@ -14,15 +14,15 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Textarea } from './ui/textarea'
+import { Textarea } from '../ui/textarea'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from './ui/select'
-import { SubmitBtn } from './ui/submitBtn'
+} from '../ui/select'
+import { SubmitBtn } from '../ui/submitBtn'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getDefaultValueFromFields } from '@/lib/utils'
 import { type CustomFormProps, type FieldData } from '@/lib/types'

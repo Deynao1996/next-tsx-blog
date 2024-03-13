@@ -1,9 +1,9 @@
 import UserPost from '@/components/UserPost'
-import { getSinglePost } from '@/lib/data'
 import { type TBlogPost } from '@/lib/types'
 import Image from 'next/image'
 import React from 'react'
 import placeholder from '../../../../public/placeholder.jpg'
+import { getSinglePost } from '@/data/post'
 
 export const generateMetadata = async ({
   params

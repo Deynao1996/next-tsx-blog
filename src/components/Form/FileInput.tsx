@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Label } from './ui/label'
-import { Input } from './ui/input'
+import { Label } from '../ui/label'
+import { Input } from '../ui/input'
 import {
   ControllerRenderProps,
   FieldValues,
   useFormContext
 } from 'react-hook-form'
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 import { useSendFile } from '@/hooks/useSendMediaFile'
-import { useToast } from './ui/use-toast'
-import { Progress } from './ui/progress'
+import { useToast } from '../ui/use-toast'
+import { Progress } from '../ui/progress'
 import { Check } from 'lucide-react'
 
 type FileInputProps = {

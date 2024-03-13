@@ -1,6 +1,12 @@
 import React from 'react'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
-import CustomForm from './CustomForm'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '../ui/card'
+import CustomForm from '../Form/CustomForm'
 import { FormLabel } from '@/lib/types'
 
 type VerifyProps = {

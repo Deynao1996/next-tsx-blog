@@ -1,8 +1,9 @@
-import AdminDashboard from '@/components/AdminDashboard'
-import AdminItem from '@/components/AdminItem'
+import AdminDashboard from '@/components/Admin/AdminDashboard'
+import AdminItem from '@/components/Admin/AdminItem'
 import { Separator } from '@/components/ui/separator'
+import { getPosts } from '@/data/post'
+import { getUsers } from '@/data/user'
 import { removePost, removeUser } from '@/lib/actions'
-import { getPosts, getUsers } from '@/lib/data'
 import { type TBlogPost, type TUserPost } from '@/lib/types'
 import { Metadata } from 'next'
 

@@ -7,7 +7,7 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { Button } from './ui/button'
-import CustomForm from './CustomForm'
+import CustomForm from './Form/CustomForm'
 
 export default function CreateUserPostDialog() {
   //TODO Fix userId input

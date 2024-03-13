@@ -2,7 +2,7 @@ import React from 'react'
 import contact from '../../../public/contact.png'
 import Image from 'next/image'
 import { Metadata } from 'next'
-import CustomForm from '@/components/CustomForm'
+import CustomForm from '@/components/Form/CustomForm'
 
 export const metadata: Metadata = {
   title: 'Contact Page',

@@ -1,9 +1,9 @@
 import BlogPost from '@/components/BlogPost'
-import { getPosts } from '@/lib/data'
 import { type TBlogPost } from '@/lib/types'
 import { Metadata } from 'next'
 import React, { Suspense } from 'react'
 import Loading from './loader'
+import { getPosts } from '@/data/post'
 
 export const metadata: Metadata = {
   title: 'Blog Page',

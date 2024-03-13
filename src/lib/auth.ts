@@ -41,7 +41,8 @@ async function githubCallback(profile?: Profile) {
       const newUser = new User({
         username: profile.name,
         email: profile.email,
-        img: profile.avatar_url
+        img: profile.avatar_url,
+        isVerified: true
       })
       await newUser.save()
     }
@@ -60,7 +61,8 @@ async function googleCallback(profile?: Profile) {
       const newUser = new User({
         username: profile.name,
         email: profile.email,
-        img: profile.picture
+        img: profile.picture,
+        isVerified: true
       })
       await newUser.save()
     }
@@ -110,6 +112,16 @@ export const {
       if (account?.provider === 'credentials') {
         if (!user) return false
       }
+
+      // Check if user is verified
+      try {
+        await connectToDb()
+        const existingUser = await User.findOne({ email: user?.email })
+        if (!existingUser?.isVerified) return false
+      } catch (error) {
+        return false
+      }
+
       if (account?.provider === 'github') await githubCallback(profile)
       if (account?.provider === 'google') await googleCallback(profile)
       return true

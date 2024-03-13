@@ -3,13 +3,13 @@
 import { routes } from '@/store'
 import { usePathname } from 'next/navigation'
 import React from 'react'
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 import Link from 'next/link'
 import { Lock, LogIn } from 'lucide-react'
-import ToggleTheme from './ToggleTheme'
+import ToggleTheme from '../ToggleTheme'
 import { handleLogout } from '@/lib/actions'
 import { Session } from 'next-auth'
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { CustomSession } from '@/lib/types'
 
 type NavLinksProps = {

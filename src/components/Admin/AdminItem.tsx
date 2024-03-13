@@ -1,12 +1,12 @@
 'use client'
 
 import React from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import { Button } from './ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Button } from '../ui/button'
 import Link from 'next/link'
 import { ZodType } from 'zod'
 import { useHandleAction } from '@/hooks/useHandleAction'
-import ConditionalTooltipWrap from './ConditionalTooltipWrap'
+import ConditionalTooltipWrap from '../Wrap/ConditionalTooltipWrap'
 import { AdminItemProps } from '@/lib/types'
 
 export default function AdminItem<T extends ZodType<any, any>>({

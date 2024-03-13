@@ -1,5 +1,5 @@
 import React from 'react'
-import CustomForm from './CustomForm'
+import CustomForm from '../Form/CustomForm'
 import AdminItemsList from './AdminItemsList'
 import { type AdminDashboardProps } from '@/lib/types'
 

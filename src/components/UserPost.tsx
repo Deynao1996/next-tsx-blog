@@ -1,8 +1,8 @@
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import { getSingleUser } from '@/lib/data'
 import { type TUserPost } from '@/lib/types'
 import Link from 'next/link'
+import { getSingleUser } from '@/data/user'
 
 export default async function UserPost({ userId }: { userId: string }) {
   const userData: TUserPost = await getSingleUser(userId)

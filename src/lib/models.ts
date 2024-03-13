@@ -21,8 +21,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       min: 6
     },
-    img: { type: String, required: true },
-    isAdmin: { type: Boolean, default: false }
+    img: { type: String, required: false },
+    isAdmin: { type: Boolean, default: false },
+    isVerified: { type: Boolean, default: false }
   },
   { timestamps: true }
 )
@@ -72,7 +73,21 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+const authTokenSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User',
+    unique: true
+  },
+  token: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now(), expires: 3600000 }
+})
+
 export const User = mongoose.models?.User || mongoose.model('User', userSchema)
 export const Post = mongoose.models?.Post || mongoose.model('Post', postSchema)
 export const Contact =
   mongoose.models?.Contact || mongoose.model('Contact', contactSchema)
+export const VerificationToken =
+  mongoose.models?.VerificationToken ||
+  mongoose.model('VerificationToken', authTokenSchema)

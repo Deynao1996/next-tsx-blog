@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import Verify from '@/components/Verify'
+import Verify from '@/components/Wrap/Verify'
 import { CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'

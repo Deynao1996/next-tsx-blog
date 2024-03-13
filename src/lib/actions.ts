@@ -22,6 +22,8 @@ import {
 } from './types'
 import bcrypt from 'bcrypt'
 import { signIn, signOut } from './auth'
+import { generateVerificationToken } from './tokens'
+import { sendVerificationEmail } from './mail'
 
 class UserAlreadyExistsError extends Error {}
 
@@ -130,8 +132,21 @@ export const removeUser = action(
 
 export const login = action(loginFormSchema, async (postData: LoginData) => {
   const { username, password } = postData
+
   try {
     await connectToDb()
+    const existingUser = await User.findOne({ username })
+    if (!existingUser || !existingUser.password || !existingUser.username) {
+      return { error: 'User does not exist' }
+    }
+
+    if (!existingUser.isVerified) {
+      const verificationToken = await generateVerificationToken(
+        existingUser._id
+      )
+      await sendVerificationEmail(existingUser.email, verificationToken.token)
+      return { successMessage: 'Confirmation email sent' }
+    }
     await signIn('credentials', {
       username: username.toLocaleLowerCase(),
       password
@@ -148,23 +163,25 @@ export const login = action(loginFormSchema, async (postData: LoginData) => {
 
 export const registerUser = action(
   registerUserFormSchema,
-  async (postData: RegisteredUserData) => {
+  async (userData: RegisteredUserData) => {
     try {
       await connectToDb()
-      const currentUser = await User.findOne({ email: postData.email })
+      const currentUser = await User.findOne({ email: userData.email })
       if (currentUser)
         return { error: 'User with provided email already exists' }
 
       const salt = await bcrypt.genSalt(10)
-      const hashedPassword = await bcrypt.hash(postData.password, salt)
+      const hashedPassword = await bcrypt.hash(userData.password, salt)
 
       const newUser = new User({
-        ...postData,
+        ...userData,
         password: hashedPassword
       })
       await newUser.save()
+      const verificationToken = await generateVerificationToken(newUser._id)
+      await sendVerificationEmail(userData.email, verificationToken.token)
 
-      return { successMessage: 'User created successfully' }
+      return { successMessage: 'Confirmation email sent' }
     } catch (error: any) {
       throw new Error(error.message)
     }

@@ -1,10 +1,11 @@
-import { getPosts, getSingleUser } from '@/lib/data'
 import { TBlogPost, TUserPost } from '@/lib/types'
 import Image from 'next/image'
 import React from 'react'
 import placeholder from '../../../../public/placeholder.jpg'
 import BlogPost from '@/components/BlogPost'
 import CreateUserPostDialog from '@/components/CreateUserPostDialog'
+import { getSingleUser } from '@/data/user'
+import { getPosts } from '@/data/post'
 
 export const generateMetadata = async ({
   params

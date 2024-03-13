@@ -1,6 +1,6 @@
 'use client'
 
-import ErrorLayout from '@/components/ErrorLayout'
+import ErrorLayout from '@/components/Wrap/ErrorLayout'
 import { Button } from '@/components/ui/button'
 import { Info, MoveLeft } from 'lucide-react'
 import Link from 'next/link'

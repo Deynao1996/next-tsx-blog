@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/providers/ThemeProvider'
-import NavBar from '@/components/NavBar'
+import NavBar from '@/components/Nav/NavBar'
 import Footer from '@/components/Footer'
 import { Toaster } from '@/components/ui/toaster'
 
