@@ -68,6 +68,13 @@ export const forgotPasswordFormSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' })
 })
 
+export const newPasswordFormSchema = z.object({
+  password: z
+    .string()
+    .min(4, { message: 'Password must be at least 4 characters.' }),
+  token: z.string().optional()
+})
+
 const phoneRegex = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
 )

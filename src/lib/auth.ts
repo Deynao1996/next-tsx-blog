@@ -8,6 +8,8 @@ import bcrypt from 'bcrypt'
 import { loginFormSchema } from './formSchema'
 import { authConfig } from './auth.config'
 
+//TODO CHECK IF THERE IS NO OAUTH & CREDENTIAL CONFLICT
+
 async function credentialLogin(credentials: Partial<Record<string, unknown>>) {
   const parsedCredentials = loginFormSchema.safeParse(credentials)
 

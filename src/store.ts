@@ -4,6 +4,7 @@ import {
   contactUs,
   forgotPassword,
   login,
+  newPassword,
   registerUser
 } from './lib/actions'
 import {
@@ -145,6 +146,15 @@ export const forgotPasswordData: FieldData[] = [
     defaultValue: '',
     label: 'Email',
     type: 'email'
+  }
+] as const
+
+export const newPasswordData: FieldData[] = [
+  {
+    fieldName: 'password',
+    defaultValue: '',
+    label: 'Password',
+    type: 'password'
   }
 ] as const
 

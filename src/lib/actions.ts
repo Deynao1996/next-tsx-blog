@@ -1,7 +1,13 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { Contact, Post, User, VerificationToken } from './models'
+import {
+  Contact,
+  Post,
+  ResetPasswordToken,
+  User,
+  VerificationToken
+} from './models'
 import { connectToDb } from './utils'
 import {
   postFormSchema,
@@ -10,7 +16,8 @@ import {
   loginFormSchema,
   registerUserFormSchema,
   removeItemSchema,
-  forgotPasswordFormSchema
+  forgotPasswordFormSchema,
+  newPasswordFormSchema
 } from './formSchema'
 import { DEFAULT_SERVER_ERROR, createSafeActionClient } from 'next-safe-action'
 import { isValidObjectId } from 'mongoose'
@@ -27,6 +34,7 @@ import { generateResetPasswordToken, generateVerificationToken } from './tokens'
 import { sendResetPasswordEmail, sendVerificationEmail } from './mail'
 import { z } from 'zod'
 import { getVerificationTokenByToken } from '@/data/authToken'
+import { getResetTokenByToken } from '@/data/resetToken'
 
 class UserAlreadyExistsError extends Error {}
 
@@ -268,6 +276,51 @@ export const forgotPassword = action(
       )
 
       return { successMessage: 'Reset email sent!' }
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
+)
+
+export const newPassword = action(
+  newPasswordFormSchema,
+  async (userData: { password: string; token?: string }) => {
+    const { password, token } = userData
+    if (!token) {
+      return { error: 'Missing token' }
+    }
+    try {
+      await connectToDb()
+      const existingToken = await getResetTokenByToken(token)
+
+      if (!existingToken) {
+        return { error: 'Invalid token' }
+      }
+
+      const expired =
+        existingToken.createdAt.getTime() +
+        process.env.RESET_PASSWORD_TOKEN_EXPIRES
+
+      const hasExpired = new Date(expired) < new Date()
+      if (hasExpired) {
+        return { error: 'Token has expired' }
+      }
+
+      const existingUser = await User.findOne({ email: existingToken.email })
+      if (!existingUser) {
+        return { error: 'User does not exist' }
+      }
+
+      const salt = await bcrypt.genSalt(10)
+      const hashedPassword = await bcrypt.hash(password, salt)
+
+      await User.updateOne(
+        { _id: existingUser._id },
+        { $set: { password: hashedPassword } }
+      )
+      await ResetPasswordToken.deleteOne({ _id: existingToken._id })
+
+      return { successMessage: 'Password changed successfully' }
     } catch (error: any) {
       throw new Error(error.message)
     }
