@@ -64,6 +64,10 @@ export const loginFormSchema = z.object({
     .min(4, { message: 'Password must be at least 4 characters.' })
 })
 
+export const forgotPasswordFormSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address.' })
+})
+
 const phoneRegex = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
 )

@@ -3,8 +3,7 @@ import Image from 'next/image'
 import React from 'react'
 import promo from '../../public/promo.png'
 
-//TODO CHECK REMIND PASSWORD AND EMAIL CONFIRMATION
-//TODO ADMIN DASHBOARD PAGINATION OR TABLES
+//TODO CHECK TOAST ICONS
 
 export default function HomePage() {
   return (

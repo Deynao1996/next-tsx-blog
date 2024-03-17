@@ -9,5 +9,7 @@ declare namespace NodeJS {
     GOOGLE_CLIENT_ID: string
     GOOGLE_CLIENT_SECRET: string
     RESEND_API_KEY: string
+    EMAIL_VERIFICATION_TOKEN_EXPIRES: number
+    RESET_PASSWORD_TOKEN_EXPIRES: number
   }
 }

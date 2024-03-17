@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { Contact, Post, User } from './models'
+import { Contact, Post, User, VerificationToken } from './models'
 import { connectToDb } from './utils'
 import {
   postFormSchema,
@@ -9,7 +9,8 @@ import {
   contactFormSchema,
   loginFormSchema,
   registerUserFormSchema,
-  removeItemSchema
+  removeItemSchema,
+  forgotPasswordFormSchema
 } from './formSchema'
 import { DEFAULT_SERVER_ERROR, createSafeActionClient } from 'next-safe-action'
 import { isValidObjectId } from 'mongoose'
@@ -22,8 +23,10 @@ import {
 } from './types'
 import bcrypt from 'bcrypt'
 import { signIn, signOut } from './auth'
-import { generateVerificationToken } from './tokens'
-import { sendVerificationEmail } from './mail'
+import { generateResetPasswordToken, generateVerificationToken } from './tokens'
+import { sendResetPasswordEmail, sendVerificationEmail } from './mail'
+import { z } from 'zod'
+import { getVerificationTokenByToken } from '@/data/authToken'
 
 class UserAlreadyExistsError extends Error {}
 
@@ -207,6 +210,64 @@ export const contactUs = action(
       const newContact = new Contact(contactData)
       await newContact.save()
       return { successMessage: 'Thanks for contacting us!' }
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
+)
+
+export const newVerification = action(z.string(), async (token: string) => {
+  try {
+    await connectToDb()
+
+    const existingToken = await getVerificationTokenByToken(token)
+    if (!existingToken) {
+      return { error: 'Token does not exist' }
+    }
+    const expired =
+      existingToken.createdAt.getTime() +
+      process.env.EMAIL_VERIFICATION_TOKEN_EXPIRES
+
+    const hasExpired = new Date(expired) < new Date()
+    if (hasExpired) {
+      return { error: 'Token has expired' }
+    }
+
+    const existingUser = await User.findById(existingToken.userId)
+    if (!existingUser) {
+      return { error: 'User does not exist' }
+    }
+
+    await User.updateOne(
+      { _id: existingToken.userId },
+      { $set: { isVerified: true } }
+    )
+
+    await VerificationToken.deleteOne({ _id: existingToken._id })
+    return { successMessage: 'Email verified successfully' }
+  } catch (error: any) {
+    throw new Error(error.message)
+  }
+})
+
+export const forgotPassword = action(
+  forgotPasswordFormSchema,
+  async (userData: { email: string }) => {
+    const { email } = userData
+    try {
+      await connectToDb()
+      const existingUser = await User.findOne({ email })
+      if (!existingUser) {
+        return { error: 'Email does not exist!' }
+      }
+
+      const passwordResetToken = await generateResetPasswordToken(email)
+      await sendResetPasswordEmail(
+        passwordResetToken.email,
+        passwordResetToken.token
+      )
+
+      return { successMessage: 'Reset email sent!' }
     } catch (error: any) {
       throw new Error(error.message)
     }

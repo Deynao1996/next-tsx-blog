@@ -1,10 +1,18 @@
-import { addPost, addUser, contactUs, login, registerUser } from './lib/actions'
+import {
+  addPost,
+  addUser,
+  contactUs,
+  forgotPassword,
+  login,
+  registerUser
+} from './lib/actions'
 import {
   postFormSchema,
   addUserFormSchema,
   contactFormSchema,
   loginFormSchema,
-  registerUserFormSchema
+  registerUserFormSchema,
+  forgotPasswordFormSchema
 } from './lib/formSchema'
 import { FieldData, FormInfo } from './lib/types'
 
@@ -131,6 +139,15 @@ export const registerUserFieldData: FieldData[] = [
   }
 ] as const
 
+export const forgotPasswordData: FieldData[] = [
+  {
+    fieldName: 'email',
+    defaultValue: '',
+    label: 'Email',
+    type: 'email'
+  }
+] as const
+
 export const formInfo: FormInfo = {
   post: {
     fieldsData: newPostFieldData,
@@ -156,5 +173,10 @@ export const formInfo: FormInfo = {
     fieldsData: registerUserFieldData,
     formSchema: registerUserFormSchema,
     action: registerUser
+  },
+  'forgot-password': {
+    fieldsData: forgotPasswordData,
+    formSchema: forgotPasswordFormSchema,
+    action: forgotPassword
   }
 } as const

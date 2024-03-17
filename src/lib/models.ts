@@ -81,7 +81,26 @@ const authTokenSchema = new mongoose.Schema({
     unique: true
   },
   token: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now(), expires: 3600000 }
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    expires: process.env.EMAIL_VERIFICATION_TOKEN_EXPIRES
+  }
+})
+
+const resetPasswordTokenSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    ref: 'User',
+    unique: true
+  },
+  token: { type: String, required: true },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    expires: process.env.RESET_PASSWORD_TOKEN_EXPIRES
+  }
 })
 
 export const User = mongoose.models?.User || mongoose.model('User', userSchema)
@@ -91,3 +110,6 @@ export const Contact =
 export const VerificationToken =
   mongoose.models?.VerificationToken ||
   mongoose.model('VerificationToken', authTokenSchema)
+export const ResetPasswordToken =
+  mongoose.models?.ResetPasswordToken ||
+  mongoose.model('ResetPasswordToken', resetPasswordTokenSchema)

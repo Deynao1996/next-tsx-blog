@@ -40,7 +40,13 @@ type SelectInputType = {
   selectVariants: string[]
 }
 
-export type FormLabel = 'post' | 'user' | 'login' | 'contact' | 'register'
+export type FormLabel =
+  | 'post'
+  | 'user'
+  | 'login'
+  | 'contact'
+  | 'register'
+  | 'forgot-password'
 
 export type FormInfo = {
   [key in FormLabel]: {
