@@ -5,6 +5,8 @@ import { ThemeProvider } from '@/providers/ThemeProvider'
 import NavBar from '@/components/Nav/NavBar'
 import Footer from '@/components/Footer'
 import { Toaster } from '@/components/ui/toaster'
+import { SessionProvider } from 'next-auth/react'
+import { auth } from '@/lib/auth'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,19 +19,22 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const session = await auth()
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <div className="container w-full min-h-screen flex flex-col justify-between">
-            <NavBar />
-            {children}
-            <Footer />
+            <SessionProvider session={session}>
+              <NavBar />
+              {children}
+              <Footer />
+            </SessionProvider>
           </div>
           <Toaster />
         </ThemeProvider>

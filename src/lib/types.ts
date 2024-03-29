@@ -91,11 +91,15 @@ export type RegisteredUserData = z.infer<typeof registerUserFormSchema>
 
 type CustomUser = User & {
   isAdmin?: boolean
+  username?: string
+  isOauth?: boolean
 }
 
 type CustomToken = JWT & {
   id?: string
   isAdmin?: boolean
+  username?: string
+  isOauth?: boolean
 }
 
 export type CustomSession = {

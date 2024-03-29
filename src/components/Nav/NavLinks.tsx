@@ -18,7 +18,6 @@ type NavLinksProps = {
 
 export default function NavLinks({ session }: NavLinksProps) {
   const pathname = usePathname()
-
   const getInitials = function (string?: string | null) {
     if (!string) return 'U'
     let names = string.split(' '),

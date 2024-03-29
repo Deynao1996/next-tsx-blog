@@ -17,7 +17,8 @@ import {
   registerUserFormSchema,
   removeItemSchema,
   forgotPasswordFormSchema,
-  newPasswordFormSchema
+  newPasswordFormSchema,
+  updateUserSchema
 } from './formSchema'
 import { DEFAULT_SERVER_ERROR, createSafeActionClient } from 'next-safe-action'
 import { isValidObjectId } from 'mongoose'
@@ -29,7 +30,7 @@ import {
   UserData
 } from './types'
 import bcrypt from 'bcrypt'
-import { signIn, signOut } from './auth'
+import { auth, signIn, signOut } from './auth'
 import { generateResetPasswordToken, generateVerificationToken } from './tokens'
 import { sendResetPasswordEmail, sendVerificationEmail } from './mail'
 import { z } from 'zod'
@@ -321,6 +322,71 @@ export const newPassword = action(
       await ResetPasswordToken.deleteOne({ _id: existingToken._id })
 
       return { successMessage: 'Password changed successfully' }
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
+)
+
+export const changeUser = action(
+  updateUserSchema,
+  async (userData: {
+    username?: string
+    email?: string
+    newPassword?: string
+    password?: string
+  }) => {
+    try {
+      const session = await auth()
+      if (!session?.user) {
+        return { error: 'Unauthorized' }
+      }
+      await connectToDb()
+      const existingUser = await User.findOne({ _id: session.user.id })
+      if (!existingUser) {
+        return { error: 'User does not exist' }
+      }
+      const isOauth = !existingUser?.password
+      if (isOauth) {
+        userData.email = undefined
+        userData.password = undefined
+        userData.newPassword = undefined
+      }
+
+      if (userData.email && userData.email !== existingUser.email) {
+        const isEmailExist = await User.findOne({ email: userData.email })
+        if (isEmailExist) {
+          return { error: 'User with provided email already exist' }
+        }
+        const verificationToken = await generateVerificationToken(
+          existingUser._id
+        )
+        await sendVerificationEmail(userData.email, verificationToken.token)
+        return { successMessage: 'Confirmation email sent!' }
+      }
+
+      if (userData.newPassword && userData.password && existingUser.password) {
+        const passwordMatch = await bcrypt.compare(
+          userData.password,
+          existingUser.password
+        )
+        if (!passwordMatch) {
+          return { error: 'Wrong password!' }
+        }
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(userData.newPassword, salt)
+        userData.password = hashedPassword
+        userData.newPassword = undefined
+      }
+
+      await User.findOneAndUpdate(
+        { _id: existingUser._id },
+        { $set: userData },
+        { new: true }
+      )
+      revalidatePath('/user')
+      revalidatePath('/user/settings')
+      return { successMessage: 'User changed successfully', data: true }
     } catch (error: any) {
       throw new Error(error.message)
     }

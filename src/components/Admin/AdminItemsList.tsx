@@ -4,8 +4,6 @@ import { ScrollArea } from '../ui/scroll-area'
 
 type AdminItemsListProps<T> = Omit<AdminDashboardProps<T>, 'label'>
 
-//TODO CHECK SCROLL AREA
-
 export default async function AdminItemsList<T>({
   getItems,
   renderItems
@@ -13,7 +11,7 @@ export default async function AdminItemsList<T>({
   const items: T[] = await getItems()
 
   return (
-    <ScrollArea asChild className="h-[400px]">
+    <ScrollArea className="h-[400px]">
       <ul className="space-y-4 pr-5">
         {items.length === 0 && (
           <li className="text-lg text-primary-foreground">

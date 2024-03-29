@@ -158,6 +158,28 @@ export const newPasswordData: FieldData[] = [
   }
 ] as const
 
+export const userSettingsFieldData: FieldData[] = [
+  { fieldName: 'username', defaultValue: '', label: 'Username', type: 'text' },
+  {
+    fieldName: 'email',
+    defaultValue: '',
+    label: 'Email',
+    type: 'email'
+  },
+  {
+    fieldName: 'password',
+    defaultValue: '',
+    label: 'Password',
+    type: 'password'
+  },
+  {
+    fieldName: 'newPassword',
+    defaultValue: '',
+    label: 'New Password',
+    type: 'password'
+  }
+] as const
+
 export const formInfo: FormInfo = {
   post: {
     fieldsData: newPostFieldData,

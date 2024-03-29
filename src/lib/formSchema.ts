@@ -110,3 +110,35 @@ export const responseSchema = z.object({
 export const removeItemSchema = z.object({
   id: z.string().min(1)
 })
+
+export const updateUserSchema = z
+  .object({
+    username: z.optional(z.string().min(2)),
+    email: z.optional(z.string().email({ message: 'Invalid email address.' })),
+    password: z.optional(z.string().min(6)),
+    newPassword: z.optional(z.string().min(6))
+  })
+  .refine(
+    (data) => {
+      if (data.password && !data.newPassword) {
+        return false
+      }
+      return true
+    },
+    {
+      message: 'Password and New Password fields are required together',
+      path: ['newPassword']
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.newPassword && !data.password) {
+        return false
+      }
+      return true
+    },
+    {
+      message: 'Password and New Password fields are required together',
+      path: ['password']
+    }
+  )

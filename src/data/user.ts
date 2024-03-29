@@ -15,13 +15,13 @@ export const getUsers = async () => {
   }
 }
 
-export const getSingleUser = async (id: string) => {
+export const getSingleUser = async (id?: string) => {
   noStore()
   try {
     await connectToDb()
-    const post: TUserPost | null = await User.findById(id)
-    if (!post) throw new Error('Failed to find user!')
-    return post
+    const user: TUserPost | null = await User.findById(id)
+    if (!user) throw new Error('Failed to find user!')
+    return user
   } catch (error: any) {
     console.log(error.message)
     throw new Error('Failed to fetch user!')

@@ -8,8 +8,6 @@ import bcrypt from 'bcrypt'
 import { loginFormSchema } from './formSchema'
 import { authConfig } from './auth.config'
 
-//TODO CHECK IF THERE IS NO OAUTH & CREDENTIAL CONFLICT
-
 async function credentialLogin(credentials: Partial<Record<string, unknown>>) {
   const parsedCredentials = loginFormSchema.safeParse(credentials)
 
@@ -113,15 +111,14 @@ export const {
     async signIn({ user, account, profile }) {
       if (account?.provider === 'credentials') {
         if (!user) return false
-      }
+        try {
+          await connectToDb()
+          const existingUser = await User.findOne({ email: user?.email })
 
-      // Check if user is verified
-      try {
-        await connectToDb()
-        const existingUser = await User.findOne({ email: user?.email })
-        if (!existingUser?.isVerified) return false
-      } catch (error) {
-        return false
+          if (!existingUser?.isVerified) return false
+        } catch (error) {
+          return false
+        }
       }
 
       if (account?.provider === 'github') await githubCallback(profile)

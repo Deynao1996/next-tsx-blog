@@ -3,8 +3,6 @@ import Image from 'next/image'
 import React from 'react'
 import promo from '../../public/promo.png'
 
-//TODO CHECK TOAST ICONS
-
 export default function HomePage() {
   return (
     <main className="flex gap-10 items-center">

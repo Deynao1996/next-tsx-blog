@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React from 'react'
 import placeholder from '../../../../public/placeholder.jpg'
 import BlogPost from '@/components/BlogPost'
-import CreateUserPostDialog from '@/components/CreateUserPostDialog'
+import UserSelfActions from '@/components/UserSelfActions'
 import { getSingleUser } from '@/data/user'
 import { getPosts } from '@/data/post'
 
@@ -47,7 +47,7 @@ export default async function UserPage({ params }: { params: { id: string } }) {
               <b>Created At:</b> {userData.createdAt.toString().slice(4, 16)}
             </p>
           </div>
-          {userData._id.toString() === params.id && <CreateUserPostDialog />}
+          {userData._id.toString() === params.id && <UserSelfActions />}
         </div>
       </div>
       {!!posts.length && (
